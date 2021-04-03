@@ -2,17 +2,18 @@
 // Created by Matteo Bavecchi on 02/04/2021.
 //
 #include "Data.h"
+#include <iostream>
 
-void Data::getDatatimeFromEpoch(unsigned int epoch) {
+void Data::getDatatimeFromEpoch(int epoch) {
     this->timestamp = epoch;
-    unsigned int tmp = epoch;
-    unsigned int years = epoch / (unsigned int) (60 * 60 * 24 * 365);
-    epoch %= (unsigned int) (60 * 60 * 24 * 365);
+    int tmp = epoch;
+    int years = epoch / (int) (60 * 60 * 24 * 365);
+    epoch %= (int) (60 * 60 * 24 * 365);
     this->second = epoch % 60;
     epoch /= 60;
     this->minute = epoch % 60;
     epoch /= 60;
-    this->hour += isLegalOur() ? (epoch % 24) + this->timeZone + 1 : (epoch % 24) + this->timeZone;
+    this->hour = (epoch % 24);
 
     if (this->hour > 12) {
         setAmPm(false);
@@ -25,13 +26,13 @@ void Data::getDatatimeFromEpoch(unsigned int epoch) {
     tmp /= 60 * 60 * 24;
     tmp %= 365 * 4 + 1;
 
-    unsigned int year;
+    int year;
     for (year = 3; year > 0; year--) {
         if (tmp >= days[year][0])
             break;
     }
 
-    unsigned int month;
+    int month;
     for (month = 11; month > 0; month--) {
         if (tmp >= days[year][month])
             break;
@@ -41,59 +42,63 @@ void Data::getDatatimeFromEpoch(unsigned int epoch) {
     this->day = tmp - days[year][month] + 1;
 }
 
-unsigned long Data::getTimestamp() const {
+int Data::getTimestamp() const {
     return timestamp;
 }
 
-void Data::setTimestamp(unsigned long timestamp) {
+void Data::setTimestamp(int timestamp) {
     Data::timestamp = timestamp;
 }
 
-unsigned int Data::getSecond() const {
+int Data::getSecond() const {
     return second;
 }
 
-void Data::setSecond(unsigned int second) {
+void Data::setSecond(int second) {
     Data::second = second;
 }
 
-unsigned int Data::getMinute() const {
+int Data::getMinute() const {
     return minute;
 }
 
-void Data::setMinute(unsigned int minute) {
+void Data::setMinute(int minute) {
     Data::minute = minute;
 }
 
-unsigned int Data::getHour() const {
-    return hour;
+int Data::getHour() const {
+    int response = isLegalOur() ? hour + timeZone + 1 : hour + timeZone;
+    if (format && response > 12)
+        response -= 12;
+
+    return response;
 }
 
-void Data::setHour(unsigned int hour) {
+void Data::setHour(int hour) {
     Data::hour = hour;
 }
 
-unsigned int Data::getDay() const {
+int Data::getDay() const {
     return day;
 }
 
-void Data::setDay(unsigned int day) {
+void Data::setDay(int day) {
     Data::day = day;
 }
 
-unsigned int Data::getMonth() const {
+int Data::getMonth() const {
     return month;
 }
 
-void Data::setMonth(unsigned int month) {
+void Data::setMonth(int month) {
     Data::month = month;
 }
 
-unsigned int Data::getYear() const {
+int Data::getYear() const {
     return year;
 }
 
-void Data::setYear(unsigned int year) {
+void Data::setYear(int year) {
     Data::year = year;
 }
 
@@ -127,7 +132,8 @@ void Data::setFormat(bool format) {
 }
 
 
-Data::Data(int timeZone, bool legalOur) : timeZone(timeZone), legalOur(legalOur) {}
+Data::Data(int timeZone, bool legalOur, bool format) : timeZone(timeZone), legalOur(legalOur),
+                                                       format(format) {}
 
 bool Data::isAmPm() const {
     return am_pm;
@@ -135,4 +141,24 @@ bool Data::isAmPm() const {
 
 void Data::setAmPm(bool amPm) {
     am_pm = amPm;
+}
+
+
+Data Data::operator--(int) {
+    if (second == 0) {
+        if (minute == 0) {
+            if (hour == 0) {
+                return *this;
+            }
+            hour--;
+            minute = 59;
+            second = 59;
+        } else {
+            minute--;
+            second = 59;
+        }
+    } else {
+        second--;
+    }
+    return *this;
 }
