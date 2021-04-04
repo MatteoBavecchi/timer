@@ -17,11 +17,31 @@ void Data::goClockWise() {
 }
 
 void Data::goCounterClockWise() {
+    terminated = false;
+    pause = false;
     std::cout << "Timer running...\n";
-    while (true) {
-        operator--(1);
-        sleep(1);
+    while (!terminated) {
+        if (!pause) {
+            sleep(1);
+            operator--(1);
+            if (hour == 0 && second == 0 && minute == 0) {
+                terminated = true;
+                std::cout << "\nFinito\n";
+            }
+        }
     }
+}
+
+void Data::stopTimer() {
+    terminated = true;
+}
+
+void Data::pauseTimer() {
+    pause = true;
+}
+
+void Data::resumeTimer() {
+    pause = false;
 }
 
 
@@ -106,6 +126,8 @@ void Data::setMinute(int minute) {
 }
 
 int Data::getHour() const {
+    if (timer)
+        return hour;
     int response = isLegalOur() ? hour + timeZone + 1 : hour + timeZone;
     if (format && response > 12)
         response -= 12;
@@ -150,6 +172,14 @@ int Data::getTimeZone() const {
     return timeZone;
 }
 
+bool Data::isTimer() const {
+    return timer;
+}
+
+void Data::setTimer(bool timer) {
+    Data::timer = timer;
+}
+
 void Data::setTimeZone(int timeZone) {
     Data::timeZone = timeZone;
 }
@@ -173,6 +203,11 @@ void Data::setFormat(bool format) {
 
 Data::Data(int timeZone, bool legalOur, bool format) : timeZone(timeZone), legalOur(legalOur),
                                                        format(format) {}
+
+
+Data::Data(int hour, int minute, int second) : hour(hour), minute(minute), second(second) {
+    timer = true;
+}
 
 bool Data::isAmPm() const {
     return am_pm;

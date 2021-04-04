@@ -8,13 +8,16 @@ int main() {
     Data *x = new Data(1, true, false);
     x->getDataTime();
 
-    x->startTimer();
+    Data *t = new Data(0, 0, 10);
+
+    t->startTimer();
     while (true) {
-        sleep(1);
+
         std::cout << "\n\nData:\n";
-        std::cout << x->getHour() << ":";
-        std::cout << x->getMinute() << ":";
-        std::cout << x->getSecond();
+        std::cout << t->getHour() << ":";
+        std::cout << t->getMinute() << ":";
+        std::cout << t->getSecond();
+        sleep(1);
 
     }
     return 0;

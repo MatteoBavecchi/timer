@@ -18,6 +18,8 @@ public:
 
     Data(int timeZone, bool isLegalOur, bool format);
 
+    Data(int hour, int minute, int second);
+
     int getTimestamp() const;
 
     int getSecond() const;
@@ -90,12 +92,22 @@ public:
 
     void startTimer();
 
+    void stopTimer();
+
+    void pauseTimer();
+
+    void resumeTimer();
+
     ~Data() {
         // if (threadCW != nullptr) {
         //threadCW->join();
         // delete threadCW;
         //}
     }
+
+    bool isTimer() const;
+
+    void setTimer(bool timer);
 
 private:
     static const inline short days[4][12] =
@@ -121,6 +133,9 @@ private:
     bool am_pm; //am_pm =true -> am; am_pm = false -> pm
     std::thread *threadCW;
     std::thread *threadCCW;
+    bool timer;
+    bool terminated;
+    bool pause;
 
 
 };
