@@ -6,6 +6,10 @@
 #define TIMER_DATA_H
 
 #include <string>
+#include "thread"
+#include "thread"
+#include <iostream>
+#include <unistd.h>
 
 
 class Data {
@@ -44,7 +48,7 @@ public:
 
     void setStringDay(const std::string &stringDay);
 
-    void getDatatimeFromEpoch(int epoch);
+    void getDataTimeFromEpoch(int epoch);
 
     const std::string &getStringMonth() const;
 
@@ -71,7 +75,27 @@ public:
     bool isAmPm() const;
 
     void setAmPm(bool amPm);
+
     Data operator--(int);
+
+    Data operator++(int);
+
+    void getDataTime();
+
+    void goClockWise();
+
+    void goCounterClockWise();
+
+    void startClock();
+
+    void startTimer();
+
+    ~Data() {
+        // if (threadCW != nullptr) {
+        //threadCW->join();
+        // delete threadCW;
+        //}
+    }
 
 private:
     static const inline short days[4][12] =
@@ -95,6 +119,8 @@ private:
     bool legalOur;
     bool format; //format=true -> 12 ore; format=false->24 ore
     bool am_pm; //am_pm =true -> am; am_pm = false -> pm
+    std::thread *threadCW;
+    std::thread *threadCCW;
 
 
 };

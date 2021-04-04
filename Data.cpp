@@ -3,8 +3,47 @@
 //
 #include "Data.h"
 #include <iostream>
+#include <chrono>
+#include "thread"
+#include <unistd.h>
 
-void Data::getDatatimeFromEpoch(int epoch) {
+
+void Data::goClockWise() {
+    std::cout << "Starting Clock...\n";
+    while (true) {
+        operator++(1);
+        sleep(1);
+    }
+}
+
+void Data::goCounterClockWise() {
+    std::cout << "Timer running...\n";
+    while (true) {
+        operator--(1);
+        sleep(1);
+    }
+}
+
+
+void Data::startClock() {
+    threadCW = new std::thread([this]() { goClockWise(); });
+}
+
+void Data::startTimer() {
+    threadCCW = new std::thread([this]() { goCounterClockWise(); });
+}
+
+
+void Data::getDataTime() {
+    using std::chrono::system_clock;
+    system_clock::time_point today = system_clock::now();
+    std::time_t timestamp;
+    timestamp = system_clock::to_time_t(today);
+    unsigned int epoch = (unsigned int) timestamp;
+    getDataTimeFromEpoch(epoch);
+}
+
+void Data::getDataTimeFromEpoch(int epoch) {
     this->timestamp = epoch;
     int tmp = epoch;
     int years = epoch / (int) (60 * 60 * 24 * 365);
@@ -160,5 +199,26 @@ Data Data::operator--(int) {
     } else {
         second--;
     }
+    return *this;
+}
+
+Data Data::operator++(int) {
+    if (second == 59) {
+        if (minute == 59) {
+            if (hour == 59) {
+                getDataTime();
+            } else {
+                hour++;
+                minute = 0;
+                second = 0;
+            }
+        } else {
+            minute++;
+            second = 0;
+        }
+    } else {
+        second++;
+    }
+
     return *this;
 }
