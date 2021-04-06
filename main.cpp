@@ -1,10 +1,29 @@
 #include <iostream>
-#include <chrono>
 #include "Data.h"
 #include <unistd.h>
-#include <thread>
+#include <QApplication>
+#include "Window.h"
 
-int main() {
+int main(int argc, char **argv) {
+    /*QApplication app(argc, argv);
+    QWidget window;
+    window.setFixedSize(300, 50);
+
+    QPushButton *button = new QPushButton("Hello World", &window);
+    button->setGeometry(100, 20, 100, 30);
+    window.show();
+    return app.exec();*/
+    QApplication app (argc, argv);
+
+    Window window;
+    window.show();
+
+    return app.exec();
+
+
+
+
+/*
     Data *x = new Data(1, true, false);
     x->getDataTime();
 
@@ -21,5 +40,6 @@ int main() {
 
     }
     return 0;
+    */
 }
 
