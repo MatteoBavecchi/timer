@@ -7,22 +7,44 @@
 #include <QPushButton>
 #include "Data.h"
 #include <string>
+#include <QTimer>
 
+//TODO: metti un label con la data
+//TODO: metti un pulsante per andare nelle impostazioni
+//TODO: metti un pulsante per andare al timer
 Window::Window(QWidget *parent) :
-        QWidget(parent) {
+        QMainWindow(parent) {
 
-    Data *t = new Data(0, 0, 10);
-
+    t = new Data(1, true, false);
+    t->startClock();
     // Set size of the window
-    setFixedSize(100, 50);
+    setFixedSize(900, 500);
 
     // Create and position the button
-    QString seconds = QString::number(t->getSecond());
-    m_button = new QPushButton(seconds, this);
-    m_button->setGeometry(10, 10, 80, 30);
-    connect(m_button, SIGNAL (clicked()), this, SLOT (start()));
+
+    m_button = new QPushButton("", this);
+    m_button->setGeometry(QRect(QPoint(0, 0), QSize(200, 50)));
+    //connect(m_button, &QPushButton::released, this, &Window::handleButton);
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, QOverload<>::of(&Window::update));
+    timer->start(1000);
 }
 
-void Window::start() {
-   std::cout<<"ciaoooo";
+void Window::update() {
+    QString seconds = QString::number(t->getSecond());
+    QString minute = QString::number(t->getMinute());
+    QString hour = QString::number(t->getHour());
+    QString day = QString::number(t->getDay());
+    QString month = QString::number(t->getMonth());
+    QString year = QString::number(t->getYear());
+    QString date = day + "/" + month + "/" + year + "  " + hour + ":" + minute + ":" + seconds;
+    m_button->setText(date);
+}
+
+void Window::handleButton() {
+    // change the text
+    //m_button->setText("Example");
+
+    // resize button
+    //m_button->resize(100, 100);
 }

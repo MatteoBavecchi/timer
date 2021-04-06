@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
     button->setGeometry(100, 20, 100, 30);
     window.show();
     return app.exec();*/
-    QApplication app (argc, argv);
+    QApplication app(argc, argv);
 
     Window window;
     window.show();

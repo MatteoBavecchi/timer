@@ -6,7 +6,7 @@
 #include <chrono>
 #include "thread"
 #include <unistd.h>
-
+//TODO: fai un tostring che stampa dd/mm/yyyy hh/mm/ss
 
 void Data::goClockWise() {
     std::cout << "Starting Clock...\n";
@@ -202,7 +202,10 @@ void Data::setFormat(bool format) {
 
 
 Data::Data(int timeZone, bool legalOur, bool format) : timeZone(timeZone), legalOur(legalOur),
-                                                       format(format) {}
+                                                       format(format) {
+    getDataTime();
+    timer = false;
+}
 
 
 Data::Data(int hour, int minute, int second) : hour(hour), minute(minute), second(second) {
