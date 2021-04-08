@@ -15,29 +15,24 @@
 Window::Window(QWidget *parent) :
         QMainWindow(parent) {
 
-    t = new Data(1, true, false);
+    t = new Data(1, true, true);
     t->startClock();
     // Set size of the window
     setFixedSize(900, 500);
 
     // Create and position the button
 
-    m_button = new QPushButton("", this);
+    QString date = QString::fromStdString(t->print());
+    m_button = new QPushButton(date, this);
     m_button->setGeometry(QRect(QPoint(0, 0), QSize(200, 50)));
     //connect(m_button, &QPushButton::released, this, &Window::handleButton);
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, QOverload<>::of(&Window::update));
-    timer->start(1000);
+    timer->start(250);
 }
 
 void Window::update() {
-    QString seconds = QString::number(t->getSecond());
-    QString minute = QString::number(t->getMinute());
-    QString hour = QString::number(t->getHour());
-    QString day = QString::number(t->getDay());
-    QString month = QString::number(t->getMonth());
-    QString year = QString::number(t->getYear());
-    QString date = day + "/" + month + "/" + year + "  " + hour + ":" + minute + ":" + seconds;
+    QString date = QString::fromStdString(t->print());
     m_button->setText(date);
 }
 

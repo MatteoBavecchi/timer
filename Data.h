@@ -64,9 +64,9 @@ public:
 
     void setTimeZone(int timeZone);
 
-    bool isLegalOur() const;
+    bool isLegalHour() const;
 
-    void setLegalOur(bool legalOur);
+    void setLegalHour(bool legalHour);
 
     void setTimestamp(int timestamp);
 
@@ -107,7 +107,11 @@ public:
 
     bool isTimer() const;
 
+    bool isLeap(int year);
+
     void setTimer(bool timer);
+
+    std::string print();
 
 private:
     static const inline short days[4][12] =
@@ -118,6 +122,8 @@ private:
                     {1096, 1127, 1155, 1186, 1216, 1247, 1277, 1308, 1339, 1369, 1400, 1430},
             };
 
+    const int MAX_VALID_YR = 3000;
+    const int MIN_VALID_YR = 1971;
     int timestamp;
     int second;
     int minute;
@@ -128,7 +134,7 @@ private:
     std::string nameOfMonths[12] = {"gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio",
                                     "agosto", "settembre", "ottobre", "novembre", "dicembre"};
     int timeZone;
-    bool legalOur;
+    bool legalHour;
     bool format; //format=true -> 12 ore; format=false->24 ore
     bool am_pm; //am_pm =true -> am; am_pm = false -> pm
     std::thread *threadCW;
