@@ -46,19 +46,7 @@ public:
 
     void setYear(int year);
 
-    const std::string &getStringDay() const;
-
-    void setStringDay(const std::string &stringDay);
-
     void getDataTimeFromEpoch(int epoch);
-
-    const std::string &getStringMonth() const;
-
-    void setStringMonth(const std::string &stringMonth);
-
-    const std::string *getNameOfDays() const;
-
-    const std::string *getNameOfMonths() const;
 
     int getTimeZone() const;
 
@@ -124,21 +112,25 @@ private:
 
     const int MAX_VALID_YR = 3000;
     const int MIN_VALID_YR = 1971;
+
     int timestamp;
+
     int second;
     int minute;
     int hour;
+
     int day;
     int month;
     int year;
-    std::string nameOfMonths[12] = {"gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio",
-                                    "agosto", "settembre", "ottobre", "novembre", "dicembre"};
+
     int timeZone;
     bool legalHour;
     bool format; //format=true -> 12 ore; format=false->24 ore
     bool am_pm; //am_pm =true -> am; am_pm = false -> pm
+
     std::thread *threadCW;
     std::thread *threadCCW;
+
     bool timer;
     bool terminated;
     bool pause;

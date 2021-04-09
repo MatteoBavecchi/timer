@@ -203,10 +203,6 @@ void Data::setYear(int year) {
 }
 
 
-const std::string *Data::getNameOfMonths() const {
-    return nameOfMonths;
-}
-
 int Data::getTimeZone() const {
     return timeZone;
 }
