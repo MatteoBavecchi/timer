@@ -5,7 +5,7 @@
 #ifndef TIMER_WINDOW_H
 #define TIMER_WINDOW_H
 
-
+#include <QWidget>
 #include "Data.h"
 #include <QMainWindow>
 
@@ -14,6 +14,7 @@ class QPushButton;
 class Window : public QMainWindow {
 public:
     explicit Window(QWidget *parent = nullptr);
+
     void update();
 
 private slots:
@@ -21,7 +22,7 @@ private slots:
     void handleButton();
 
 private:
-    Data* t;
+    Data *t;
     QPushButton *m_button;
 };
 

@@ -12,10 +12,11 @@
 //TODO: metti un label con la data
 //TODO: metti un pulsante per andare nelle impostazioni
 //TODO: metti un pulsante per andare al timer
+//TODO: unit test con QT della classe Data
 Window::Window(QWidget *parent) :
         QMainWindow(parent) {
 
-    t = new Data(1, true, true);
+    t = new Data(1, true, false);
     t->startClock();
     // Set size of the window
     setFixedSize(900, 500);

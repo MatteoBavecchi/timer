@@ -6,7 +6,6 @@
 #include <chrono>
 #include "thread"
 #include <unistd.h>
-//TODO: fai un tostring che stampa dd/mm/yyyy hh/mm/ss
 
 void Data::goClockWise() {
     std::cout << "Starting Clock...\n";

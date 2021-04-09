@@ -1,6 +1,3 @@
-#include <iostream>
-#include "Data.h"
-#include <unistd.h>
 #include <QApplication>
 #include "Window.h"
 
@@ -14,7 +11,7 @@ int main(int argc, char **argv) {
     window.show();
     return app.exec();*/
     QApplication app(argc, argv);
-
+    Data x(1, true, false);
     Window window;
     window.show();
 
