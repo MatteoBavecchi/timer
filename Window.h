@@ -9,6 +9,9 @@
 #include "Data.h"
 #include <QMainWindow>
 #include <QLabel>
+#include <QSettings>
+#include <QLineEdit>
+#include <QCheckBox>
 
 class QPushButton;
 
@@ -20,6 +23,8 @@ public:
 
     void openSettings();
     void openTimer();
+    void setConfig();
+    void refreshConfigurations();
 
 private slots:
 
@@ -32,6 +37,11 @@ private:
     QLabel *label;
     QWidget *settings_window;
     QWidget *timer_window;
+    QSettings *settings;
+
+    QLineEdit *timezone_input;
+    QCheckBox *legalHour_input;
+    QCheckBox *format_input;
 };
 
 

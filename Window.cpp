@@ -9,25 +9,33 @@
 #include <string>
 #include <QTimer>
 #include <QFont>
+#include <QInputDialog>
+#include <QLabel>
 
-//TODO: metti un label con la data
-//TODO: metti un pulsante per andare nelle impostazioni
-//TODO: metti un pulsante per andare al timer
-//TODO: unit test con QT della classe Data
 Window::Window(QWidget *parent) :
         QMainWindow(parent) {
 
-    t = new Data(1, true, false);
+    settings = new QSettings("matteobavecchi", "timer");
+
+    if (!settings->contains("timezone")) {
+        settings->setValue("timezone", 1);
+        settings->setValue("legalHour", true);
+        settings->setValue("format", false);
+    }
+    int timezone = settings->value("timezone").toInt();
+    bool legalHour = settings->value("legalHour").toBool();
+    bool format = settings->value("format").toBool();
+    t = new Data(timezone, legalHour, format);
+
     t->startClock();
-    // Set size of the window
+
     setFixedSize(400, 200);
 
-    // Create and position the button
     QString date = QString::fromStdString(t->print());
 
     label = new QLabel(this);
     QFont font = label->font();
-    font.setPointSize(30);
+    font.setPointSize(26);
     font.setBold(true);
     label->setFont(font);
 
@@ -49,6 +57,15 @@ Window::Window(QWidget *parent) :
     timer->start(250);
 
 
+}
+
+void Window::refreshConfigurations() {
+    int timezone = settings->value("timezone").toInt();
+    bool legalHour = settings->value("legalHour").toBool();
+    bool format = settings->value("format").toBool();
+    t->setTimeZone(timezone);
+    t->setLegalHour(legalHour);
+    t->setFormat(format);
 
 }
 
@@ -66,20 +83,48 @@ void Window::handleButton() {
 }
 
 void Window::openSettings() {
+    int timezone = settings->value("timezone").toInt();
+    bool legalHour = settings->value("legalHour").toBool();
+    bool format = settings->value("format").toBool();
     settings_window = new QWidget;
 
-    settings_window->setFixedSize(300, 50);
+    QLabel *timezone_label = new QLabel(settings_window);
+    timezone_label->setText("timezone:");
+    timezone_label->setGeometry(QRect(QPoint(30, 20), QSize(100, 25)));
+    timezone_input = new QLineEdit("", settings_window);
+    timezone_input->setPlaceholderText("Enter timezone");
+    timezone_input->setText(settings->value("timezone").toString());
+    timezone_input->setGeometry(QRect(QPoint(30, 50), QSize(100, 25)));
 
-    QPushButton *button = new QPushButton("Hello World", settings_window);
-    button->setGeometry(100, 20, 100, 30);
+    legalHour_input = new QCheckBox("Legal hour", settings_window);
+    legalHour_input->setChecked(settings->value("legalHour").toBool());
+    legalHour_input->setGeometry(QRect(QPoint(170, 20), QSize(100, 25)));
+
+    format_input = new QCheckBox("12h/24h", settings_window);
+    format_input->setChecked(settings->value("format").toBool());
+    format_input->setGeometry(QRect(QPoint(170, 80), QSize(100, 25)));
+
+    settings_window->setFixedSize(300, 150);
+    QPushButton *button = new QPushButton("Save", settings_window);
+    connect(button, &QPushButton::released, this, &Window::setConfig);
+    button->setGeometry(QRect(QPoint(100, 120), QSize(100, 25)));
+
     settings_window->show();
     settings_window->setFocus();
 }
+
+void Window::setConfig() {
+    settings->setValue("timezone", timezone_input->text().toInt());
+    settings->setValue("legalHour", legalHour_input->isChecked());
+    settings->setValue("format", format_input->isChecked());
+    refreshConfigurations();
+    settings_window->hide();
+}
+
 void Window::openTimer() {
     timer_window = new QWidget;
 
     timer_window->setFixedSize(300, 50);
-
     QPushButton *button = new QPushButton("Hello World", timer_window);
     button->setGeometry(100, 20, 100, 30);
     timer_window->show();
