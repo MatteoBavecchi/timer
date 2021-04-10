@@ -86,12 +86,6 @@ public:
 
     void resumeTimer();
 
-    ~Data() {
-        // if (threadCW != nullptr) {
-        //threadCW->join();
-        // delete threadCW;
-        //}
-    }
 
     bool isTimer() const;
 

@@ -22,16 +22,26 @@ public:
     void update();
 
     void openSettings();
+
     void openTimer();
+
     void setConfig();
+
     void refreshConfigurations();
+
+    void timerStart();
+
+    void timerStop();
+
+    void updateTimer();
 
 private slots:
 
-    void handleButton();
 
 private:
     Data *t;
+    Data *timer;
+
     QPushButton *settings_button;
     QPushButton *timer_button;
     QLabel *label;
@@ -42,6 +52,13 @@ private:
     QLineEdit *timezone_input;
     QCheckBox *legalHour_input;
     QCheckBox *format_input;
+
+    QPushButton *start_button;
+    QPushButton *stop_button;
+    QLineEdit *hour_input;
+    QLineEdit *minute_input;
+    QLineEdit *second_input;
+    QLabel *timer_label;
 };
 
 

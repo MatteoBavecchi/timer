@@ -33,6 +33,9 @@ void Data::goCounterClockWise() {
 
 void Data::stopTimer() {
     terminated = true;
+    hour = 0;
+    minute = 0;
+    second = 0;
 }
 
 void Data::pauseTimer() {
@@ -115,7 +118,8 @@ int Data::getSecond() const {
 }
 
 void Data::setSecond(int second) {
-    if (second <= 0 || second > 59)
+
+    if (second < 0 || second > 59)
         throw std::invalid_argument("Secondi non validi");
     Data::second = second;
 }
@@ -125,7 +129,7 @@ int Data::getMinute() const {
 }
 
 void Data::setMinute(int minute) {
-    if (minute <= 0 || minute > 59)
+    if (minute < 0 || minute > 59)
         throw std::invalid_argument("Minuti non validi");
     Data::minute = minute;
 }
@@ -143,7 +147,8 @@ int Data::getHour() const {
 void Data::setHour(int hour) {
     if (hour < 0)
         throw std::invalid_argument("Ora non valida");
-    if (isFormat()) {
+
+    if (!timer && isFormat()) {
         //12 ore
         if (hour > 11)
             throw std::invalid_argument("Ora non valida");
@@ -152,6 +157,7 @@ void Data::setHour(int hour) {
         //24 ore
         if (hour > 23)
             throw std::invalid_argument("Ora non valida");
+
         Data::hour = hour;
     }
 }
@@ -314,19 +320,27 @@ std::string Data::print() {
     std::string MM;
     std::string YYYY;
 
-    int effectiveHour = isLegalHour() ? hour + timeZone + 1 : hour + timeZone;
-    if (isFormat())
-        effectiveHour -= 12;
+    if (timer) {
+        hour < 10 ? hh = "0" + std::to_string(hour) : hh = std::to_string(hour);
+        minute < 10 ? mm = "0" + std::to_string(minute) : mm = std::to_string(minute);
+        second < 10 ? ss = "0" + std::to_string(second) : ss = std::to_string(second);
+        return hh + ":" + mm + ":" + ss;
+    } else {
 
-    effectiveHour < 10 ? hh = "0" + std::to_string(effectiveHour) : hh = std::to_string(effectiveHour);
-    minute < 10 ? mm = "0" + std::to_string(minute) : mm = std::to_string(minute);
-    second < 10 ? ss = "0" + std::to_string(second) : ss = std::to_string(second);
-    day < 10 ? DD = "0" + std::to_string(day) : DD = std::to_string(day);
-    month < 10 ? MM = "0" + std::to_string(month) : MM = std::to_string(month);
-    YYYY = std::to_string(year);
+        int effectiveHour = isLegalHour() ? hour + timeZone + 1 : hour + timeZone;
+        if (isFormat())
+            effectiveHour -= 12;
 
-    if (isFormat())
-        return DD + "/" + MM + "/" + YYYY + "  " + hh + ":" + mm + ":" + ss + (isAmPm() ? " AM" : " PM");
-    else
-        return DD + "/" + MM + "/" + YYYY + "  " + hh + ":" + mm + ":" + ss;
+        effectiveHour < 10 ? hh = "0" + std::to_string(effectiveHour) : hh = std::to_string(effectiveHour);
+        minute < 10 ? mm = "0" + std::to_string(minute) : mm = std::to_string(minute);
+        second < 10 ? ss = "0" + std::to_string(second) : ss = std::to_string(second);
+        day < 10 ? DD = "0" + std::to_string(day) : DD = std::to_string(day);
+        month < 10 ? MM = "0" + std::to_string(month) : MM = std::to_string(month);
+        YYYY = std::to_string(year);
+
+        if (isFormat())
+            return DD + "/" + MM + "/" + YYYY + "  " + hh + ":" + mm + ":" + ss + (isAmPm() ? " AM" : " PM");
+        else
+            return DD + "/" + MM + "/" + YYYY + "  " + hh + ":" + mm + ":" + ss;
+    }
 }
