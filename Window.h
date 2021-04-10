@@ -8,6 +8,7 @@
 #include <QWidget>
 #include "Data.h"
 #include <QMainWindow>
+#include <QLabel>
 
 class QPushButton;
 
@@ -17,13 +18,20 @@ public:
 
     void update();
 
+    void openSettings();
+    void openTimer();
+
 private slots:
 
     void handleButton();
 
 private:
     Data *t;
-    QPushButton *m_button;
+    QPushButton *settings_button;
+    QPushButton *timer_button;
+    QLabel *label;
+    QWidget *settings_window;
+    QWidget *timer_window;
 };
 
 
