@@ -12,50 +12,50 @@
 #include <QInputDialog>
 #include <QLabel>
 
-Window::Window(QWidget * parent)
-:
-QMainWindow(parent) {
+Window::Window(QWidget *parent)
+        :
+        QMainWindow(parent) {
 
-        settings = new QSettings("matteobavecchi", "timer");
+    settings = new QSettings("matteobavecchi", "timer");
 
-        if (!settings->contains("timezone")) {
-            settings->setValue("timezone", 1);
-            settings->setValue("legalHour", true);
-            settings->setValue("format", false);
-        }
-        int timezone = settings->value("timezone").toInt();
-        bool legalHour = settings->value("legalHour").toBool();
-        bool format = settings->value("format").toBool();
-        t = new Data(timezone, legalHour, format);
+    if (!settings->contains("timezone")) {
+        settings->setValue("timezone", 1);
+        settings->setValue("legalHour", true);
+        settings->setValue("format", false);
+    }
+    int timezone = settings->value("timezone").toInt();
+    bool legalHour = settings->value("legalHour").toBool();
+    bool format = settings->value("format").toBool();
+    t = new Data(timezone, legalHour, format);
 
-        t->startClock();
+    t->startClock();
 
-        setFixedSize(400, 200);
+    setFixedSize(400, 200);
 
-        QString date = QString::fromStdString(t->print());
+    QString date = QString::fromStdString(t->print());
 
-        label = new QLabel(this);
-        QFont font = label->font();
-        font.setPointSize(26);
-        font.setBold(true);
-        label->setFont(font);
+    label = new QLabel(this);
+    QFont font = label->font();
+    font.setPointSize(26);
+    font.setBold(true);
+    label->setFont(font);
 
-        settings_button = new QPushButton("Settings", this);
-        settings_button->setGeometry(QRect(QPoint(30, 130), QSize(100, 50)));
-        connect(settings_button, &QPushButton::released, this, &Window::openSettings);
+    settings_button = new QPushButton("Settings", this);
+    settings_button->setGeometry(QRect(QPoint(30, 130), QSize(100, 50)));
+    connect(settings_button, &QPushButton::released, this, &Window::openSettings);
 
-        timer_button = new QPushButton("Timer", this);
-        timer_button->setGeometry(QRect(QPoint(270, 130), QSize(100, 50)));
-        connect(timer_button, &QPushButton::released, this, &Window::openTimer);
+    timer_button = new QPushButton("Timer", this);
+    timer_button->setGeometry(QRect(QPoint(270, 130), QSize(100, 50)));
+    connect(timer_button, &QPushButton::released, this, &Window::openTimer);
 
 
-        label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-        label->setText(date);
-        label->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
-        label->setGeometry(QRect(QPoint(30, 50), QSize(340, 50)));
-        QTimer *timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, QOverload<>::of(&Window::update));
-        timer->start(250);
+    label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    label->setText(date);
+    label->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
+    label->setGeometry(QRect(QPoint(30, 50), QSize(340, 50)));
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, QOverload<>::of(&Window::update));
+    timer->start(250);
 
 
 }
@@ -79,7 +79,7 @@ void Window::update() {
 void Window::openSettings() {
     settings_window = new QWidget;
 
-    QLabel * timezone_label = new QLabel(settings_window);
+    QLabel *timezone_label = new QLabel(settings_window);
     timezone_label->setText("timezone:");
     timezone_label->setGeometry(QRect(QPoint(30, 20), QSize(100, 25)));
     timezone_input = new QLineEdit("", settings_window);
@@ -96,7 +96,7 @@ void Window::openSettings() {
     format_input->setGeometry(QRect(QPoint(170, 80), QSize(100, 25)));
 
     settings_window->setFixedSize(300, 150);
-    QPushButton * button = new QPushButton("Save", settings_window);
+    QPushButton *button = new QPushButton("Save", settings_window);
     connect(button, &QPushButton::released, this, &Window::setConfig);
     button->setGeometry(QRect(QPoint(100, 120), QSize(100, 25)));
 
@@ -168,7 +168,7 @@ void Window::timerStart() {
     timer->setSecond(second_input->text().toInt());
 
 
-    QTimer * delay = new QTimer(timer_window);
+    QTimer *delay = new QTimer(timer_window);
     connect(delay, &QTimer::timeout, this, QOverload<>::of(&Window::updateTimer));
     delay->start(250);
 
