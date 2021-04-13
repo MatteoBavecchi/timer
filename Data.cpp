@@ -328,7 +328,7 @@ std::string Data::print() {
     } else {
 
         int effectiveHour = isLegalHour() ? hour + timeZone + 1 : hour + timeZone;
-        if (isFormat())
+        if (isFormat() && effectiveHour > 12)
             effectiveHour -= 12;
 
         effectiveHour < 10 ? hh = "0" + std::to_string(effectiveHour) : hh = std::to_string(effectiveHour);
