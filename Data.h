@@ -72,9 +72,6 @@ public:
 
     void getDataTime();
 
-    void goClockWise();
-
-    void goCounterClockWise();
 
     void startClock();
 
@@ -89,13 +86,18 @@ public:
 
     bool isTimer() const;
 
-    bool isLeap(int year);
 
     void setTimer(bool timer);
 
     std::string print();
 
 private:
+    bool isLeap(int year);
+
+    void goClockWise();
+
+    void goCounterClockWise();
+
     static const inline short days[4][12] =
             {
                     {0,    31,   60,   91,   121,  152,  182,  213,  244,  274,  305,  335},
