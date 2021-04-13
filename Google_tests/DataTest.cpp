@@ -22,75 +22,33 @@ TEST(test, timestamp) {
 
 TEST(test, secondi) {
     Data clock(1, true, true);
-    try {
-        clock.setSecond(61);
-        FAIL();
-    }
-    catch (std::invalid_argument &err) {
-        // check exception
-        ASSERT_STREQ("Secondi non validi", err.what());
-    }
+    ASSERT_THROW(clock.setSecond(61), std::invalid_argument);
 }
 
 TEST(test, minuti) {
     Data clock(1, true, true);
-    try {
-        clock.setMinute(61);
-        FAIL();
-    }
-    catch (std::invalid_argument &err) {
-        // check exception
-        ASSERT_STREQ("Minuti non validi", err.what());
-    }
+    ASSERT_THROW(clock.setMinute(61), std::invalid_argument);
 }
 
 
 TEST(test, ore) {
     Data clock(1, true, true);
-    try {
-        clock.setHour(12);
-        FAIL();
-    }
-    catch (std::invalid_argument &err) {
-        // check exception
-        ASSERT_STREQ("Ora non valida", err.what());
-    }
+    ASSERT_THROW(clock.setHour(12), std::invalid_argument);
 }
 
 TEST(test, giorni) {
     Data clock(1, true, true);
-    try {
-        clock.setDay(32);
-        FAIL();
-    }
-    catch (std::invalid_argument &err) {
-        // check exception
-        ASSERT_STREQ("Giorno non valido", err.what());
-    }
+    ASSERT_THROW(clock.setDay(32), std::invalid_argument);
 }
 
 TEST(test, mesi) {
     Data clock(1, true, true);
-    try {
-        clock.setMonth(13);
-        FAIL();
-    }
-    catch (std::invalid_argument &err) {
-        // check exception
-        ASSERT_STREQ("Mese non valido", err.what());
-    }
+    ASSERT_THROW(clock.setMonth(13), std::invalid_argument);
 }
 
 TEST(test, anni) {
     Data clock(1, true, true);
-    try {
-        clock.setYear(3001);
-        FAIL();
-    }
-    catch (std::invalid_argument &err) {
-        // check exception
-        ASSERT_STREQ("Anno non valido", err.what());
-    }
+    ASSERT_THROW(clock.setYear(3001), std::invalid_argument);
 }
 
 TEST(test, inc) {
